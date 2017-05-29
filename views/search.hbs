@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Busca</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body id="app" style="display: none">
+
+    <div class="container-fluid">
+        <div class="row">
+            <div id="top-offset" class="col-sm-12"></div>
+        </div>
+        <div id="busca" class="row">
+            <div class="col-xs-12 col-sm-offset-2 col-sm-8 col-md-offset-3 col-md-6 col-lg-offset-4 col-lg-4 well shadow">
+                <h2 class="text-center" style="margin: 20px">Qual filme você procura?</h2>
+                <hr style="border-top: 1px solid #ccc">
+                <form action="search" method="POST">
+                    <div class="form-group">
+                        <div class="input-group input-group-lg">
+                            <input type="text" name="query" class="form-control" placeholder="Nome do filme...">
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit">Buscar</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.js"></script>
+    <script src="vue/search.js"></script>
+
+</body>
+
+
+</html>

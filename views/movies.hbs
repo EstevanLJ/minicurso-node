@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Resultado</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body style="display: none">
+    <div class="container-fluid">
+        <div class="row">
+            <div id="top-offset" class="col-sm-12"></div>
+        </div>
+        <div id="corpo" class="row">
+            <div class="col-xs-12 col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8 col-lg-offset-3 col-lg-6 well shadow">
+                <div class="row">
+                    <div class="col-sm-12">
+                        {{#if movies}}
+
+                        <h2 class="text-center" style="margin: 20px">Resultado da busca</h2>
+
+                        <hr style="border-top: 1px solid #ccc">
+
+                        <!--Tabela de resultados -->
+                        <div class="table-responsive">
+                            <table class="table table-bordered table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Título</th>
+                                        <th>Data</th>
+                                        <th>Detalhes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {{#each movies}}
+                                    <tr>
+                                        <td>{{title}}</td>
+                                        <td>{{formatDate release_date}}</td>
+                                        <td class="text-center"><button class="btn btn-default details" value="{{id}}" @click="clickedDetails">+</button></td>
+                                    </tr>
+                                    {{/each}}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {{else}}
+
+                        <h2 class="text-center" style="margin: 20px">Nenhum filme encontrado!</h2>
+
+                        <hr style="border-top: 1px solid #ccc"> {{/if}}
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-6">
+                        <p sryle="color: #bbb, style">Fonte: TMDb</p>
+                    </div>
+                    <div class="col-sm-6">
+                        <form action="/" method="GET">
+                            <button class="btn btn-primary pull-right" type="submit">Voltar</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!--Modal Detalhes-->
+                <div id="modal-details" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="gridSystemModalLabel">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h3 class="modal-title" id="modal-title">\{{ details.title }} (\{{ details.year }})</h3>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <img id="modal-poster" class="img-responsive" :src="details.poster_path" alt="poster">
+                                        <hr style="border-top: 1px solid #ccc">
+                                        <ul class="list-group">
+                                            <li class="list-group-item">
+                                                <h4 class="list-group-item-heading">Título original</h4>
+                                                <p id="modal-original-title" class="list-group-item-text">\{{ details.original_title }}</p>
+                                            </li>
+                                        </ul>
+
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <ul class="list-group">
+                                            <li class="list-group-item" v-if="details.overview">
+                                                <h4 class="list-group-item-heading">Sinopse</h4>
+                                                <p id="modal-overview" class="list-group-item-text">\{{ details.overview }}</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.formated_date">
+                                                <h4 class="list-group-item-heading">Data de lançamento</h4>
+                                                <p id="modal-overview" class="list-group-item-text">\{{ details.formated_date }}</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.cast">
+                                                <h4 class="list-group-item-heading">Principais atores</h4>
+                                                <p id="modal-cast" class="list-group-item-text">\{{ details.cast }}</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.runtime">
+                                                <h4 class="list-group-item-heading">Duração</h4>
+                                                <p id="modal-runtime" class="list-group-item-text">\{{ details.runtime }} minutos</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.genres">
+                                                <h4 class="list-group-item-heading">Gêneros</h4>
+                                                <p id="modal-genres" class="list-group-item-text">\{{ details.genres }}</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.companies">
+                                                <h4 class="list-group-item-heading">Produzido por</h4>
+                                                <p id="modal-companies" class="list-group-item-text">\{{ details.companies }}</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.budget > 0">
+                                                <h4 class="list-group-item-heading">Orçamento</h4>
+                                                <p id="modal-budget" class="list-group-item-text">\{{ details.formated_budget }}</p>
+                                            </li>
+                                            <li class="list-group-item" v-if="details.revenue > 0">
+                                                <h4 class="list-group-item-heading">Retorno</h4>
+                                                <p id="modal-revenue" class="list-group-item-text">\{{ details.formated_revenue }}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Fechar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal Carregando-->
+                <div id="modal-loading" class="modal fade bs-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                    <div class="modal-dialog modal-sm" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h4 class="modal-title" id="modal-title">Carregando...</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+
+    <script src="js/moment/locale/pt-br.js"></script>
+    <script src="vue/movies.js"></script>
+
+</body>
+
+</html>
