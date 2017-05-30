@@ -2,9 +2,10 @@
   "name": "minicurso-node",
   "version": "1.0.0",
   "description": "Exemplo construido para o minicurso ministrado no CCTEC 2017",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index"
   },
   "author": "Estevan Junges",
   "license": "ISC",
