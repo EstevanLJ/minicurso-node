@@ -4,8 +4,12 @@ Esta aplicação foi desenvolvida para o workshop de NodeJS que acontecerá no C
 
 ## Configuração
 
-Renomear o arquivo .example.env para .env e alterar a propriedade API_KEY para a sua chave da API. 
+Renomear o arquivo <kbd>.example.env</kbd> para <kbd>.env</kbd> e alterar a propriedade API_KEY para a sua chave da API.
 
-### Créditos para TMDb
+## Execução
+
+`nodemon app` ou `node app`
+
+## Créditos para TMDb
 
 Todos os dados estão no The Movie Database, e todos os créditos devidos a organização.
