@@ -14,7 +14,10 @@ module.exports = (app) => {
         if (req.body.query) {
             api.search(req.body.query, (err, result) => {
                 if (err) {
-                    res.send('bad');
+                    res.render('error.hbs', {
+                        error: '500',
+                        message: 'Desculpe, algo deu errado.'
+                    });
                 } else {
                     let movies = result.results;
                     if (movies.length > 10) {
@@ -26,20 +29,36 @@ module.exports = (app) => {
                 }
             });
         } else {
-            res.send('bad');
+            res.status(500);
+            res.render('error.hbs', {
+                error: '500',
+                message: 'Desculpe, algo deu errado.'
+            });
         }
     });
 
-    //Rota da requisição ajax
+    //Rota da requisicao ajax
     app.get('/details/:id', function (req, res) {
         api.getDetails(req.params.id, (err, result) => {
             if (err) {
-                console.log(err);
-                res.send('err');
+                res.status(500);
+                res.render('error.hbs', {
+                    error: '500',
+                    message: 'Desculpe, algo deu errado.'
+                });
             } else {
                 res.send(result);
             }
         });
     });
-    
+
+    //Caso nao entre em nenhuma rota, retorna erro 404
+    app.use(function (req, res, next) {
+        res.status(404);
+        res.render('error.hbs', {
+            error: '404',
+            message: 'Página não encontrada!'
+        });
+    });
+
 }

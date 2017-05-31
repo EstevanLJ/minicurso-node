@@ -75,12 +75,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h3 class="modal-title" id="modal-title">\{{ details.title }} (\{{ details.year }})</h3>
+                                <h3 class="modal-title" id="modal-title">
+                                    \{{ details.title }} <span v-if="details.year">(\{{ details.year }})</span>
+                                </h3>
                             </div>
                             <div class="modal-body">
                                 <div class="row">
-                                    <div class="col-sm-6">
-                                        <img id="modal-poster" class="img-responsive" :src="details.poster_path" alt="poster">
+                                    <div class="col-sm-6" v-if="details.poster_path">
+                                        <img id="modal-poster" class="img-responsive" :src="details.full_poster_path" alt="poster">
                                         <hr style="border-top: 1px solid #ccc">
                                         <ul class="list-group">
                                             <li class="list-group-item">
@@ -88,10 +90,13 @@
                                                 <p id="modal-original-title" class="list-group-item-text">\{{ details.original_title }}</p>
                                             </li>
                                         </ul>
-
                                     </div>
-                                    <div class="col-sm-6">
+                                    <div class="col-sm-6" :class="{ 'col-sm-offset-3': !details.poster_path }">
                                         <ul class="list-group">
+                                            <li class="list-group-item" v-if="!details.poster_path">
+                                                <h4 class="list-group-item-heading">Título original</h4>
+                                                <p id="modal-original-title" class="list-group-item-text">\{{ details.original_title }}</p>
+                                            </li>
                                             <li class="list-group-item" v-if="details.overview">
                                                 <h4 class="list-group-item-heading">Sinopse</h4>
                                                 <p id="modal-overview" class="list-group-item-text">\{{ details.overview }}</p>
@@ -152,7 +157,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.3/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/accounting.js/0.4.1/accounting.min.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.16.1/axios.min.js"></script>

@@ -6,13 +6,19 @@ new Vue({
         details: {}
     },
     methods: {
-        clickedDetails ($event) {
+        clickedDetails($event) {
             let movie_id = $event.srcElement.value;
             $('#modal-loading').modal('show');
             axios.get('/details/' + movie_id).then((res) => {
                 this.details = res.data;
-                this.details.year = moment(res.data.release_date).format('YYYY');
-                this.details.formated_date = moment(res.data.release_date).format('LL');
+
+                if (moment(res.data.release_date).isValid()) {
+                    this.details.year = moment(res.data.release_date).format('YYYY');
+                    this.details.formated_date = moment(res.data.release_date).format('LL');
+                } else {
+                    this.details.year = undefined;
+                    this.details.formated_date = 'Sem informação'
+                }
                 this.details.formated_budget = accounting.formatMoney(res.data.budget);
                 this.details.formated_revenue = accounting.formatMoney(res.data.revenue);
                 $('#modal-loading').modal('hide');
@@ -21,12 +27,12 @@ new Vue({
                 $('#modal-loading').modal('hide');
             });
         },
-        handleResize () {
+        handleResize() {
             let corpo_height = document.getElementById('corpo').offsetHeight;
             document.getElementById('top-offset').style.height = (window.innerHeight / 2) - (corpo_height / 2) + 'px';
         }
     },
-    mounted () {
+    mounted() {
         $('body').fadeIn('fast');
         moment.locale('pt-br');
         this.$nextTick(() => {
@@ -34,7 +40,7 @@ new Vue({
             this.handleResize();
         });
     },
-    beforeDestroy () {
+    beforeDestroy() {
         window.removeEventListener('resize', this.handleResize)
     }
 })

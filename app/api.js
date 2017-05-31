@@ -52,7 +52,8 @@ api.getDetails = (movie_id, callback) => {
                 genres: [],
                 cast: [],
                 runtime: detailsRes.data.runtime,
-                poster_path: `https://image.tmdb.org/t/p/w500${detailsRes.data.poster_path}`
+                poster_path: detailsRes.data.poster_path,
+                full_poster_path: `https://image.tmdb.org/t/p/w500${detailsRes.data.poster_path}`
             };
 
             detailsRes.data.production_companies.forEach((company) => {
