@@ -1,7 +1,7 @@
 module.exports = (app) => {
 
-    //Importa a api
-    const api = require('../api.js');
+    //Importa os controllers
+    const controller = require('../controllers/controller.js');
 
     //Rota da tela inicial
     app.get('/', function (req, res) {
@@ -10,46 +10,12 @@ module.exports = (app) => {
 
     //Rota da busca principal
     app.post('/search', function (req, res) {
-
-        if (req.body.query) {
-            api.search(req.body.query, (err, result) => {
-                if (err) {
-                    res.render('error.hbs', {
-                        error: '500',
-                        message: 'Desculpe, algo deu errado.'
-                    });
-                } else {
-                    let movies = result.results;
-                    if (movies.length > 10) {
-                        movies = movies.slice(0, 10);
-                    }
-                    res.render('movies.hbs', {
-                        movies
-                    });
-                }
-            });
-        } else {
-            res.status(500);
-            res.render('error.hbs', {
-                error: '500',
-                message: 'Desculpe, algo deu errado.'
-            });
-        }
+        controller.search(req, res);
     });
 
     //Rota da requisicao ajax
     app.get('/details/:id', function (req, res) {
-        api.getDetails(req.params.id, (err, result) => {
-            if (err) {
-                res.status(500);
-                res.render('error.hbs', {
-                    error: '500',
-                    message: 'Desculpe, algo deu errado.'
-                });
-            } else {
-                res.send(result);
-            }
-        });
+        controller.details(req, res);
     });
 
     //Caso nao entre em nenhuma rota, retorna erro 404
